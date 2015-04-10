@@ -1,10 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
+class __planets(object):
+    def __init__(self):
+        self.planets = []
+    def append(self, planet):
+        self.planets.append(planet)
+
+__planets__ =  __planets()
+
+
 class Vessel(object):
     def __init__(self, name, position, capacity):
         self.name = str(name)
-        self.position = list(position)
+        self.position = None
+        for planet in __planets__.planets:
+            if planet.position == position:
+                self.position = planet.name
+                break
+        if not self.position:
+            self.position = list(position)
         self.capacity = int(capacity)
         self.occupied = 0
     def report(self):
@@ -21,6 +36,10 @@ class Vessel(object):
         if isinstance(newPosition, Planet):
             self.position = newPosition.name
         else:
+            for planet in __planets__.planets:
+                if planet.position == newPosition:
+                    self.position = planet.name
+                    return
             self.position = list(newPosition)
 
 
@@ -29,6 +48,7 @@ class Planet(object):
         self.name = str(name)
         self.position = list(position)
         self.availableAmountOfCargo = int(availableAmountOfCargo)
+        __planets__.append(self)
     def report(self):
         if not self.availableAmountOfCargo:
             _occupied = "Товаров нет"
